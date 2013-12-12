@@ -1,0 +1,96 @@
+.tabs{
+	 float: left;
+    position: relative;
+    width: 740px;
+}
+.note-pedido{
+	  border: 1px solid #DDDDDD;
+    border-radius: 3px;
+    display: inline;
+    float: right;
+    margin-top: 100px;
+    padding: 10px;
+    position: relative;
+    width: 250px;
+}
+.name-product{
+	margin: 0;
+}
+.name-restaurant{
+	
+}
+.price{
+	 display: inline;
+    margin: 10px 10px 0;
+}
+.add-pedido{
+	
+}
+.description{
+	
+}
+.img-product{
+	float: left;
+    position: relative;
+    width: 100px;
+}
+.content-1{
+	 display: inline;
+    float: left;
+    margin-left: 15px;
+    position: relative;
+    width: 450px;
+}
+.content-2{
+	float: right;
+    margin-top: 30px;
+    position: relative;
+}
+.product-list{
+	  height: 110px;
+    margin-bottom: 5px;
+	
+}
+.list-li{
+	
+}
+.product-l{
+	 list-style: none outside none;
+	 padding-left: 10px;
+}
+.confirmar-pedido{
+	position:relative;
+	 margin-top: 15px;
+}
+.item{
+	margin-bottom: 5px;
+}
+.cant{
+	font-size: 16px;
+    font-weight: bold;
+    margin-right: 30px;
+}
+.name{
+	font-weight: bold;
+}
+.delete{
+	 background: none repeat scroll 0 0 #444444;
+    border: 1px solid #444444;
+    border-radius: 5px;
+    color: #FFFFFF;
+    float: right;
+    font-weight: bold;
+    position: relative;
+    text-align: center;
+    width: 20px;
+    cursor: pointer;
+}
+.total{
+	float: right;
+    font-size: 20px;
+    margin-right: 25px;
+    position: relative;
+}
+.htotal{
+	 display: inline;
+}

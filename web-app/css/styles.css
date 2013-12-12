@@ -1,0 +1,48 @@
+@CHARSET "ISO-8859-1";
+.restaurant-list img {
+  margin-left: none;
+  margin-right: none;
+  margin-top: 35px;
+  float: left;
+  position: relative;
+}
+
+.restaurant-list h3{
+	margin-top: 0px;
+	margin-left: 64px;
+}
+
+.restaurant-list p{
+	margin-left: 64px;
+}
+
+.restaurant-list btn{
+	margin-botton: 0px;
+}
+.restaurant-list {
+	margin-top: 5px;
+}
+.footer{
+	border-top: 1px solid #E5E5E5;
+color: #777777;
+margin-top: 100px;
+padding-bottom: 30px;
+padding-top: 40px;
+text-align: center;
+}
+.center{
+	
+}
+.center-on{
+	  margin-left: 150px;
+}
+.right{
+	float: right;
+    position: relative;
+    margin-left: 20px;
+}
+.left {
+	float: left;
+    position: relative;
+    margin-right: 20px;
+}

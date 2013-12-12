@@ -1,0 +1,11 @@
+@CHARSET "ISO-8859-1";
+
+
+.menu-left-user li{
+	cursor: pointer
+}
+.form-signin {
+  margin: 0 auto;
+  max-width: 330px;
+  padding: 15px;
+}
