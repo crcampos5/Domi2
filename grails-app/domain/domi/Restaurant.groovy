@@ -1,6 +1,6 @@
 package domi
 //Cristian Campos
-class Restaurant {
+class Restaurant extends Usuario{
 	
 	static hasMany = [products: Product, comentarios:Comment]
 	
@@ -12,16 +12,16 @@ class Restaurant {
 	String email
 	String web
 	String fanpage
-	String password
+	//String password
 	String direccion
-	String role = "restaurant"
+	//String role = "restaurant"
 	
 
     static constraints = {
 		nit size:10..24, unique:true
 		name black:false
 		email email:true
-		password password:true, size: 8..25,black:false,nullable:false
+		//password password:true, size: 8..25,black:false,nullable:false
     }
 	
 	String toString(){

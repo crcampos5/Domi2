@@ -1,55 +1,27 @@
 package domi
 
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugin.springsecurity.annotation.Secured
 
 class UserController {
+	def springSecurityService
 	
 	static scaffold = User
 	
-	def login = {}
-
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-	
-	def beforeInterceptor = [action:this.&auth, except:["authenticate","index", "login", "create","checkuser","save","ajaxLoadTemplate"]]
-	
-	def auth() {
-		if(!session.user) {
-		  redirect(controller:"user", action:"login")
-		  flash.message = "no eres usuario"
-		  return false
-		}
-	}
-
-    def authenticate = {
-		def user = User.findByEmailAndPassword(params.email,params.password)
-		if(user){
-			session.user = user
-			//flash.message = "Hola  ${user.name}"
-			//render (template: "menu-top-user")
-			//redirect(controller:"user", action:"index")
-			render "true"
-		}else {
-			flash.message = "Lo siento"
-			//redirect(action:"login")
-			render "false"
-		}
-	}
-	
-	
-	def ajaxLoadTemplate = {
+	@Secured(['ROLE_USER','permitAll'])
+	def ajaxLoadTemplate(){
 		render (template: params.templa)
 	}
 	
-	def logout = {
-		flash.message = "Adios"
-		session.user = null
-		redirect(controller:"user", action:"list")
+	@Secured(['permitAll'])
+	def ajaxShowLogin(){
+		render (template: "login")
 	}
 	
 	def index() {
         redirect(uri: "/")
     }
-
+	@Secured(['permitAll'])
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [userInstanceList: User.list(params), userInstanceTotal: User.count()]
@@ -58,16 +30,18 @@ class UserController {
     def create() {
         [userInstance: new User(params)]
     }
-
+	@Secured(['permitAll'])
     def save() {
-        def userInstance = new User(params)
+		def userInstance = new User(params)
+
         if (!userInstance.save(flush: true)) {
-            render(view: "create", model: [userInstance: userInstance])
+            render(template: "create")
             return
         }
-
-        flash.message = message(code: 'default.created.message', args: [message(code: 'user.label', default: 'User'), userInstance.id])
-        redirect(action: "index", id: userInstance.id)
+		def userRole = Rol.findByAuthority("ROLE_USER")
+		UsuarioRol.create userInstance, userRole, true
+    
+        render(template: "index")
     }
 
     def show(Long id) {

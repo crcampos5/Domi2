@@ -19,7 +19,11 @@
 				callback(data);
 			},
 			error : function(request, status, error) {
-				alert("Error");
+				console.log(request.status);
+					if(request.status==401)
+	                   user_controller.showLogin();
+	                else
+	                	alert("fail2");
 			},
 			complete : function(data) {
 

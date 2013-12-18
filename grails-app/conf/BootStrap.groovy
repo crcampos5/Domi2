@@ -5,13 +5,36 @@ import domi.Restaurant
 import domi.User
 import grails.util.GrailsUtil
 import domi.Product
+import domi.Usuario
+import domi.Rol
+import domi.UsuarioRol
 
 class BootStrap {
 
     def init = { servletContext ->
-	
+			
+			def adminRole = new Rol(authority: 'ROLE_ADMIN').save(flush: true) 
+			def userRole = new Rol(authority: 'ROLE_USER').save(flush: true)
+			def restaurantRole = new Rol(authority: 'ROLE_RESTAURANT').save(flush: true)
+			
+		/*	def testUser = new Usuario(username: 'admin', password: 'password') 
+			testUser.save(flush: true)
+			def testUser1 = new Usuario(username: 'usuario', password: 'password')
+			testUser1.save(flush: true)
+			def testUser2 = new Usuario(username: 'restaurante', password: 'password')
+			testUser2.save(flush: true)
+			
+			UsuarioRol.create testUser, adminRole, true
+			UsuarioRol.create testUser1, userRole, true
+			UsuarioRol.create testUser2, restaurantRole, true
+			
+			assert Usuario.count() == 3 
+			assert Rol.count() == 3 
+			assert UsuarioRol.count() == 3*/
 		
-				def restaurant = new Restaurant(nit: "2222222222",
+				def restaurant = new Restaurant( 
+					nit: "2222222222",
+					username:"Mostaza",
 					name:"Mostaza",
 					email:"crcampos4@hotmail.com",
 					password:"12345678",
@@ -23,7 +46,10 @@ class BootStrap {
 					web: ""
 					)
 				restaurant.save(failOnError: true)
+				UsuarioRol.create restaurant, restaurantRole, true
+				
 				def restaurant1 = new Restaurant(nit: "2222222223",
+					username:"Mostaza2",
 					name:"Mostaza2",
 					email:"csrcampos4@hotmail.com",
 					password:"12345678",
@@ -35,7 +61,10 @@ class BootStrap {
 					web: ""
 					)
 				restaurant1.save(failOnError: true)
+				UsuarioRol.create restaurant1, restaurantRole, true
+				
 				def restaurant2 = new Restaurant(nit: "2222222224",
+					username:"Mostaza3",
 					name:"Mostaza3",
 					email:"scrcampos4@hotmail.com",
 					password:"12345678",
@@ -47,8 +76,10 @@ class BootStrap {
 					web: ""
 					)
 				restaurant2.save(failOnError: true)
+				UsuarioRol.create restaurant2, restaurantRole, true
 				
 				def restaurant3 = new Restaurant(nit: "2222222252",
+					username:"Mostaza4",
 					name:"Mostaza4",
 					email:"scrcamdpos4@hotmail.com",
 					password:"12345678",
@@ -60,6 +91,7 @@ class BootStrap {
 					web: ""
 					)
 				restaurant3.save(failOnError: true)
+				UsuarioRol.create restaurant3, restaurantRole, true
 				
 				def product1= new Product(
 					name: "pollo",
@@ -106,6 +138,7 @@ class BootStrap {
 				product5.setRestaurant(restaurant1)
 				product5.save(failOnError: true)
 				def user = new User(
+					username: "crcampos5",
 					name: "Cristian",
 					lastname: "Campos",
 					email: "campos_012@hotmail.com",
@@ -113,9 +146,10 @@ class BootStrap {
 					gender: "Masculino",
 					birthdate: new Date(),
 					password: "12345678",
-					role: "usuario"
+					
 					)
-				user.save(failOnError: true)	
+				user.save(failOnError: true)
+				UsuarioRol.create user, userRole, true
     }
     def destroy = {
     }

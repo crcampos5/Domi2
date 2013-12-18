@@ -14,21 +14,16 @@ function User(){
 function UserController(){
 		
 	this.login = function(){
-		var url = "/Domi/user/authenticate"; // the script where you handle the form input.
-		//var call = this.indexUser();
-	    $.ajax({
+		var url = "/j_spring_security_check";
+		  $.ajax({
 	           type: "POST",
-	           url: url,
+	           url: appContext + url,
 	           data: $(".navbar-form").serialize(), // serializes the form's elements.
 	           success: function(data)
 	           {
-	        	   if(data == "true"){
-	        		   user.setLogin(true);
-		        	   user_controller.indexUser();
-	        	   }else{
-	        		   alert("intentalo otra vez");
-	        	   }
-	        	   
+	        	  user.setLogin(data.success);
+	        	  user_controller.indexUser();
+	        	  console.log(data);
 	           },
 	           error : function(request, status, error) {
 					alert("Error");
@@ -39,7 +34,60 @@ function UserController(){
 	         });
 	}
 	
+	this.logout = function(){
+		var url = "/j_spring_security_logout";
+		  $.ajax({
+	           type: "POST",
+	           url: appContext + url,
+	          // data: $(".navbar-form").serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	        	  user.setLogin(false);
+	        	//  user_controller.indexUser();
+	        	  console.log(data);
+	           },
+	           error : function(request, status, error) {
+					alert("Error");
+				},
+				complete : function(data) {
+
+				}
+	         });
+	}
 	
+	this.authAjax = function(){
+		var url = "/j_spring_security_check";
+		  $.ajax({
+	           type: "POST",
+	           url: appContext + url,
+	           data: $(".form-signin").serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	        	  user.setLogin(data.success);
+	        	  user_controller.indexUser();
+	        	  console.log(data);
+	        	  
+	              
+	           },
+	           error : function(request, status, error) {
+					alert("Error");
+				},
+				complete : function(data) {
+
+				}
+	         });
+		
+	}
+	
+	this.showLogin= function(){
+		var url = "/user/ajaxShowLogin";
+		var params = ""
+		var call = function(data){
+ 			 $("#center").html(data);
+ 		}
+		var jax = ajax(url, params, call);
+	}
+		
 	this.indexUser = function(){
 
  		var url = "/user/ajaxLoadTemplate"; 
@@ -63,6 +111,36 @@ function UserController(){
  		var jax3 = ajax(url, params3, call3);
 	}
 	
+	this.showRegistro= function(){
+		var url = "/user/ajaxLoadTemplate";
+		var params = {templa : "create"}
+		var call = function(data){
+ 			 $("#center").html(data);
+ 		}
+		var jax = ajax(url, params, call);
+	}
+	
+	this.create = function(){
+		var url = "/user/save";
+		  $.ajax({
+	           type: "POST",
+	           url: appContext + url,
+	           data: $("#create-user").serialize(), // serializes the form's elements.
+	           success: function(data)
+	           {
+	        	   $("#center").html(data);
+	        	 // user_controller.indexUser();
+	        	  console.log(data);
+	           },
+	           error : function(request, status, error) {
+					alert("Error");
+				},
+				complete : function(data) {
+
+				}
+	         });
+	}
+	
 	function ajax(url, params, callback) {
 		var jax = $.ajax({
 			type : "GET",
@@ -73,7 +151,11 @@ function UserController(){
 				callback(data);
 			},
 			error : function(request, status, error) {
-				alert("Error");
+			    alert(request.status);
+				if(request.status==302)
+                   alert("fail");
+                else
+                	alert("fail2");
 			},
 			complete : function(data) {
 

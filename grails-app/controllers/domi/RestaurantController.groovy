@@ -1,7 +1,7 @@
 package domi
 
 import org.springframework.dao.DataIntegrityViolationException
-//import grails.plugin.springsecurity.annotation.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 
 class RestaurantController {
@@ -32,31 +32,31 @@ class RestaurantController {
 			render "false"
 		}
 	}*/
-
+	@Secured(['ROLE_RESTAURANT'])
     def index() {
         redirect(action: "list", params: params)
     }
 	
-
+	@Secured(['permitAll'])
 	def ajaxList() {
 		def list_res = Restaurant.list()
 		render (template: "list", model: [restaurantInstanceList: Restaurant.list()] )
 	}
-
+	@Secured(['ROLE_RESTAURANT'])
 	def ajaxShowLogin() {
 		render (template: "login")
 	}
 	
-
+	@Secured(['ROLE_RESTAURANT'])
     def list(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         [restaurantInstanceList: Restaurant.list(params), restaurantInstanceTotal: Restaurant.count()]
     }
-
+	@Secured(['ROLE_RESTAURANT'])
     def create() {
         [restaurantInstance: new Restaurant(params)]
     }
-
+	@Secured(['ROLE_RESTAURANT'])
     def save() {
         def restaurantInstance = new Restaurant(params)
         if (!restaurantInstance.save(flush: true)) {
@@ -67,7 +67,7 @@ class RestaurantController {
         flash.message = message(code: 'default.created.message', args: [message(code: 'restaurant.label', default: 'Restaurant'), restaurantInstance.id])
         redirect(action: "show", id: restaurantInstance.id)
     }
-
+	@Secured(['ROLE_RESTAURANT'])
     def show(Long id) {
         def restaurantInstance = Restaurant.get(id)
 		
@@ -79,7 +79,7 @@ class RestaurantController {
 
         [restaurantInstance: restaurantInstance]
     }
-
+	@Secured(['ROLE_RESTAURANT'])
     def edit(Long id) {
         def restaurantInstance = Restaurant.get(id)
         if (!restaurantInstance) {
@@ -90,7 +90,7 @@ class RestaurantController {
 
         [restaurantInstance: restaurantInstance]
     }
-
+	@Secured(['ROLE_RESTAURANT'])
     def update(Long id, Long version) {
         def restaurantInstance = Restaurant.get(id)
         if (!restaurantInstance) {
@@ -119,7 +119,7 @@ class RestaurantController {
         flash.message = message(code: 'default.updated.message', args: [message(code: 'restaurant.label', default: 'Restaurant'), restaurantInstance.id])
         redirect(action: "show", id: restaurantInstance.id)
     }
-	
+	@Secured(['ROLE_RESTAURANT'])
     def delete(Long id) {
         def restaurantInstance = Restaurant.get(id)
         if (!restaurantInstance) {

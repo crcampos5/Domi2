@@ -3,22 +3,15 @@ package domi
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.springframework.dao.DataIntegrityViolationException
+import grails.plugin.springsecurity.annotation.Secured
 
 class PedidoController {
+	
+	def springSecurityService
 	
 	static scaffold = Pedido
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
-	
-	def beforeInterceptor = [action:this.&auth, except:["ajaxAddProduct","ajaxListProduct","index","ajaxIndex","ajaxConfirmarPedido"]]
-
-	def auth() {
-		if(!session.user) {
-		  redirect(controller:"user", action:"login")
-		  flash.message = "no eres usuario"
-		  return false
-		}
-	}
 	
 	def ajaxAddProduct = {
 				
@@ -26,20 +19,23 @@ class PedidoController {
 		
 		render product as JSON
 	}
-	
-	def ajaxListProduct = {
+	@Secured(['permitAll'])
+	def ajaxListProduct(){
 		def product = Product.get(params.productId)
 		def restaurant = Restaurant.get(product.restaurant.id)
 		def products = Product.findAllByRestaurant(restaurant)	
 		render products as JSON
 	}
 	
-	def ajaxConfirmarPedido = {
+	@Secured(['ROLE_USER'])
+	def ajaxConfirmarPedido(){
+		def user = springSecurityService.currentUser
+		
 		def list_productos = JSON.parse(JSON.parse(params.json).get("products_pedido")) 
 		def pedido = new Pedido()
 		
-		if(session.user) {
-			pedido.setUsuario(session.user)
+		
+			pedido.setUsuario(user)
 			pedido.setTotal(JSON.parse(params.json).get("total"))
 			pedido.save(failOnError: true)
 			pedido.setCode(pedido.id)
@@ -58,16 +54,11 @@ class PedidoController {
 				producto_pedido.save(failOnError: true)
 				
 			}
-			render(template:"list",model:[pedidoInstanceList: Pedido.list()])
-		  }else {
-		  	render(template:"/user/login")
-			}
-	
-
-		
+			render(template:"list",model:[pedidoInstanceList: Pedido.list()])		
 	}
 	
-	def ajaxIndex = {
+	@Secured(['permitAll'])
+	def ajaxIndex() {
 		def products = Product.findAllByRestaurant(Restaurant.get(params.restaurantId))
 		 render(template:"index",model:[menuInstance: products])
 		
@@ -82,8 +73,8 @@ class PedidoController {
 		def pedidoInstance = Pedido.get(params.pedidoId)
 		render (template: params.templa,model:[pedidoInstance: pedidoInstance])
 	}
-	
-	def ajaxListPedido = {
+	@Secured(['ROLE_USER'])
+	def ajaxListPedido() {
 		//params.max = Math.min(max ?: 10, 100)
 		render(template:"list",model:[pedidoInstanceList: Pedido.list()])
 	}

@@ -2,7 +2,7 @@
 <ul class="nav navbar-nav">
 	<li class="dropdown">
 	<a data-toggle="dropdown" class="dropdown-toggle" href="#"> 
-	${session.user.name} <b class="caret"></b>
+	<sec:username/> <b class="caret"></b>
 	</a>
 		<ul class="dropdown-menu">
 
@@ -10,7 +10,7 @@
 
 			<li class="divider"></li>
 
-			<li><g:link controller="user" action="logout">Salir</g:link></li>
+			<li><a onclick="javascript: user_controller.logout();">Salir</a></li>
 
 		</ul>
 		

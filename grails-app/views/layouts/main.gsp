@@ -65,12 +65,14 @@
 					<ul class="nav navbar-nav">
 				</div>
 				<div class="navbar-collapse collapse navbar-right" id="navbar-user">
-					<g:if test="${session.user}">
-						<g:render template="/user/menu-top-user"/>
-					</g:if>
-					<g:else>
-						<g:render template="/user/logout"/>
-					</g:else>
+					<sec:ifLoggedIn>
+						<g:render template="/user/menu-top-user"/> 
+        				 Logged in as <sec:username/> (<g:link controller='logout'>Logout</g:link>)
+      				</sec:ifLoggedIn>
+      				<sec:ifNotLoggedIn>
+      					<g:render template="/user/logout"/>
+       					 <a href='#' onclick='user_controller.showLogin(); return false;'>Login</a>
+     				 </sec:ifNotLoggedIn>
 				</div>
 			</div>
 		</div>
